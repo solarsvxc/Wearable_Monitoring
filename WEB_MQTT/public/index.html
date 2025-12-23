@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Sensor Dashboard</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="logo">❤</div>
+          <div>
+            <div class="title">Health Sensor Dashboard</div>
+            <div class="subtitle">
+              Theo dõi BPM · SpO₂ · Nhiệt độ · Mức nguy hiểm
+            </div>
+          </div>
+        </div>
+
+        <div class="status">
+          <div class="pill" id="pillStatus">Đang kết nối…</div>
+          <div class="meta">
+            <div class="meta-label">Cập nhật</div>
+            <div class="meta-value" id="lastUpdate">—</div>
+          </div>
+        </div>
+      </header>
+
+      <main class="grid">
+        <!-- LEFT: Metric cards -->
+        <section class="cards">
+          <div class="card metric">
+            <div class="metric-top">
+              <div class="metric-name">BPM</div>
+              <div class="metric-badge" id="bpmBadge">—</div>
+            </div>
+            <div class="metric-value">
+              <span id="bpm">0</span><span class="unit"> bpm</span>
+            </div>
+            <div class="metric-range">Bình thường: 60–100</div>
+          </div>
+
+          <div class="card metric">
+            <div class="metric-top">
+              <div class="metric-name">SpO₂</div>
+              <div class="metric-badge" id="spo2Badge">—</div>
+            </div>
+            <div class="metric-value">
+              <span id="spo2">0</span><span class="unit"> %</span>
+            </div>
+            <div class="metric-range">Khuyến nghị: ≥ 95%</div>
+          </div>
+
+          <div class="card metric">
+            <div class="metric-top">
+              <div class="metric-name">Temperature</div>
+              <div class="metric-badge" id="tempBadge">—</div>
+            </div>
+            <div class="metric-value">
+              <span id="temp">0</span><span class="unit"> °C</span>
+            </div>
+            <div class="metric-range">Bình thường: 36.5–37.5°C</div>
+          </div>
+
+          <div class="card alert">
+            <div class="alert-title">Đánh giá nhanh</div>
+            <div class="alert-text" id="alertText">Đang lấy dữ liệu…</div>
+            <div class="alert-hint">
+              Màu sẽ đổi theo mức nguy hiểm để dễ nhìn.
+            </div>
+          </div>
+        </section>
+
+        <!-- RIGHT: Danger gauge + chart -->
+        <section class="right">
+          <div class="card gauge-card">
+            <div class="gauge-header">
+              <div>
+                <div class="gauge-title">Mức nguy hiểm</div>
+                <div class="gauge-sub">Tổng hợp từ BPM, SpO₂, Nhiệt độ</div>
+              </div>
+              <div class="risk-chip" id="riskChip">—</div>
+            </div>
+
+            <div class="gauge-wrap">
+              <div class="ring">
+                <svg viewBox="0 0 120 120" class="ring-svg">
+                  <!-- background -->
+                  <circle cx="60" cy="60" r="46" class="ring-bg"></circle>
+                  <!-- progress -->
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="46"
+                    class="ring-progress"
+                    id="ringProgress"
+                  ></circle>
+                </svg>
+                <div class="ring-center">
+                  <div class="ring-value" id="dangerValue">0%</div>
+                  <div class="ring-label">Danger</div>
+                </div>
+              </div>
+
+              <div class="gauge-legend">
+                <div class="legend-row">
+                  <span class="dot dot-safe"></span> An toàn (0–24)
+                </div>
+                <div class="legend-row">
+                  <span class="dot dot-warn"></span> Cảnh báo (25–49)
+                </div>
+                <div class="legend-row">
+                  <span class="dot dot-high"></span> Nguy hiểm (50–74)
+                </div>
+                <div class="legend-row">
+                  <span class="dot dot-crit"></span> Rất nguy hiểm (75–100)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Đồ thị thời gian thực</div>
+                <div class="chart-sub">Hiển thị 60 điểm gần nhất</div>
+              </div>
+              <div class="chart-actions">
+                <button class="btn ghost" id="btnClear">Xóa dữ liệu</button>
+              </div>
+            </div>
+
+            <div class="chart-box">
+              <canvas id="chart"></canvas>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
